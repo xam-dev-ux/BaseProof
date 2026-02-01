@@ -74,9 +74,12 @@ describe("BaseProof", function () {
         { value: certificationFee }
       );
 
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt!.blockNumber);
+
       await expect(tx)
         .to.emit(baseProof, "DocumentCertified")
-        .withArgs(1, documentHash, user1.address, title, category, await ethers.provider.getBlockNumber(), isPublic);
+        .withArgs(1, documentHash, user1.address, title, category, block!.timestamp, isPublic);
 
       expect(await baseProof.getTotalCertificates()).to.equal(1);
     });
@@ -223,13 +226,16 @@ describe("BaseProof", function () {
     });
 
     it("Should transfer certificate ownership", async function () {
-      await expect(
-        baseProof.connect(user1).transferCertificate(certificateId, user2.address, {
-          value: transferFee,
-        })
-      )
+      const tx = await baseProof.connect(user1).transferCertificate(certificateId, user2.address, {
+        value: transferFee,
+      });
+
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt!.blockNumber);
+
+      await expect(tx)
         .to.emit(baseProof, "CertificateTransferred")
-        .withArgs(certificateId, user1.address, user2.address, await ethers.provider.getBlockNumber());
+        .withArgs(certificateId, user1.address, user2.address, block!.timestamp);
 
       const cert = await baseProof.connect(user2).getCertificate(certificateId);
       expect(cert.owner).to.equal(user2.address);
@@ -282,9 +288,13 @@ describe("BaseProof", function () {
       await ethers.provider.send("evm_increaseTime", [revocationCooldown + 1]);
       await ethers.provider.send("evm_mine", []);
 
-      await expect(baseProof.connect(user1).revokeCertificate(certificateId, "QmReason"))
+      const tx = await baseProof.connect(user1).revokeCertificate(certificateId, "QmReason");
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt!.blockNumber);
+
+      await expect(tx)
         .to.emit(baseProof, "CertificateRevoked")
-        .withArgs(certificateId, user1.address, "QmReason", await ethers.provider.getBlockNumber());
+        .withArgs(certificateId, user1.address, "QmReason", block!.timestamp);
 
       const cert = await baseProof.connect(user1).getCertificate(certificateId);
       expect(cert.isRevoked).to.be.true;

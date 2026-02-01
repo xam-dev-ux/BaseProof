@@ -193,7 +193,7 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
     error InvalidTags();
     error CertificateNotFound();
     error NotAuthorized();
-    error CertificateRevoked();
+    error AlreadyRevoked();
     error RevocationCooldownNotMet();
     error InvalidRecipient();
     error CertificateNotExpired();
@@ -433,7 +433,7 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
         Certificate storage cert = certificates[_certificateId];
         if (cert.id == 0) revert CertificateNotFound();
         if (cert.owner != msg.sender) revert NotAuthorized();
-        if (cert.isRevoked) revert CertificateRevoked();
+        if (cert.isRevoked) revert AlreadyRevoked();
         if (_newOwner == address(0) || _newOwner == msg.sender) revert InvalidRecipient();
 
         address previousOwner = cert.owner;
@@ -472,7 +472,7 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
             Certificate storage cert = certificates[_certificateIds[i]];
             if (cert.id == 0) revert CertificateNotFound();
             if (cert.owner != msg.sender) revert NotAuthorized();
-            if (cert.isRevoked) revert CertificateRevoked();
+            if (cert.isRevoked) revert AlreadyRevoked();
 
             address previousOwner = cert.owner;
             cert.owner = _newOwner;
@@ -504,7 +504,7 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
     ) external whenNotPaused {
         Certificate storage cert = certificates[_certificateId];
         if (cert.id == 0) revert CertificateNotFound();
-        if (cert.isRevoked) revert CertificateRevoked();
+        if (cert.isRevoked) revert AlreadyRevoked();
 
         // Authorization check
         bool isAuthorized = msg.sender == cert.issuer ||
@@ -577,7 +577,7 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
         Certificate storage cert = certificates[_certificateId];
         if (cert.id == 0) revert CertificateNotFound();
         if (cert.owner != msg.sender) revert NotAuthorized();
-        if (cert.isRevoked) revert CertificateRevoked();
+        if (cert.isRevoked) revert AlreadyRevoked();
         if (cert.expirationDate == 0) revert CertificateNotExpired();
         if (_newExpirationDate <= block.timestamp) revert InvalidExpirationDate();
 
@@ -603,7 +603,7 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
         Certificate storage cert = certificates[_certificateId];
         if (cert.id == 0) revert CertificateNotFound();
         if (cert.issuer != msg.sender) revert NotAuthorized();
-        if (cert.isRevoked) revert CertificateRevoked();
+        if (cert.isRevoked) revert AlreadyRevoked();
         if (_coCertifier == address(0) || _coCertifier == cert.issuer) revert InvalidCoCertifiers();
         if (cert.coCertifiers.length + cert.pendingCoCertifiers.length >= 10) {
             revert CoCertifierLimitReached();
@@ -896,7 +896,11 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
 
     /**
      * @notice Get platform statistics
-     * @return Platform stats
+     * @return _totalCertificates Total number of certificates
+     * @return _totalIssuers Total number of unique issuers
+     * @return _totalRevoked Total number of revoked certificates
+     * @return totalPublic Total number of public certificates
+     * @return totalPrivate Total number of private certificates
      */
     function getPlatformStats()
         external
@@ -928,7 +932,10 @@ contract BaseProof is ReentrancyGuard, Ownable2Step, Pausable {
     /**
      * @notice Get issuer statistics
      * @param _issuer Issuer address
-     * @return Issuer stats
+     * @return totalIssued Total certificates issued by this address
+     * @return _totalRevoked Total certificates revoked
+     * @return totalTransferred Total certificates that have been transferred
+     * @return certificateIds Array of all certificate IDs issued by this address
      */
     function getIssuerStats(address _issuer)
         external
