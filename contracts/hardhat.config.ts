@@ -32,10 +32,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: {
-      base: process.env.BASESCAN_API_KEY || "",
-      baseSepolia: process.env.BASESCAN_API_KEY || "",
-    },
+    apiKey: process.env.BASESCAN_API_KEY || "",
     customChains: [
       {
         network: "base",
@@ -54,6 +51,9 @@ const config: HardhatUserConfig = {
         }
       }
     ]
+  },
+  sourcify: {
+    enabled: false
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS === "true",
