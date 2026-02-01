@@ -29,7 +29,7 @@ Una vez que tu app esté live en Vercel:
 
 1. Ve a: https://www.base.dev/preview?tab=account
 
-2. Pega tu dominio de Vercel (ej: `baseproof.vercel.app`) en el campo **App URL**
+2. Pega tu dominio de Vercel (ej: `base-proof-frontend.vercel.app`) en el campo **App URL**
 
 3. Haz clic en **Submit**
 
@@ -69,12 +69,12 @@ git push origin main
 
 Tu manifest debe estar disponible en:
 ```
-https://baseproof.vercel.app/.well-known/farcaster.json
+https://base-proof-frontend.vercel.app/.well-known/farcaster.json
 ```
 
 Verifica que sea accesible públicamente usando curl:
 ```bash
-curl https://baseproof.vercel.app/.well-known/farcaster.json
+curl https://base-proof-frontend.vercel.app/.well-known/farcaster.json
 ```
 
 ### 4. Compartir en Farcaster
@@ -98,11 +98,11 @@ Para validar que todo esté configurado correctamente:
 ## 📱 URLs de las Imágenes
 
 Todas estas URLs deben estar accesibles:
-- Icon: https://baseproof.vercel.app/icon.png (1024x1024px)
-- Splash: https://baseproof.vercel.app/splash.png (200x200px)
-- Hero: https://baseproof.vercel.app/hero.png (1200x630px)
-- OG Image: https://baseproof.vercel.app/og-image.png (1200x630px)
-- Screenshots: https://baseproof.vercel.app/screenshot[1-3].png (1284x2778px)
+- Icon: https://base-proof-frontend.vercel.app/icon.png (1024x1024px)
+- Splash: https://base-proof-frontend.vercel.app/splash.png (200x200px)
+- Hero: https://base-proof-frontend.vercel.app/hero.png (1200x630px)
+- OG Image: https://base-proof-frontend.vercel.app/og-image.png (1200x630px)
+- Screenshots: https://base-proof-frontend.vercel.app/screenshot[1-3].png (1284x2778px)
 
 ## 🎯 Categorías y Tags
 

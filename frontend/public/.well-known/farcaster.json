@@ -1,30 +1,30 @@
 {
   "accountAssociation": {
-    "header": "",
-    "payload": "",
-    "signature": ""
+    "header": "eyJmaWQiOjU4MDczOCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDEwOUM5ZTgwMTNFY2U4ODZENGY4QUUyNjkyNTRkZTkzMEFFZmNkNDQifQ",
+    "payload": "eyJkb21haW4iOiJiYXNlLXByb29mLWZyb250ZW5kLnZlcmNlbC5hcHAifQ",
+    "signature": "79qgnrBsAX5vB6VKqDzfv5KLEwFsZhSn7GdNM5RJCK4HFEzP+6K1uwdCwFFe2I0cAaTtFbY0sgyGW0jGVMpCDBw="
   },
   "miniapp": {
     "version": "1",
     "name": "BaseProof",
-    "homeUrl": "https://baseproof.vercel.app",
-    "iconUrl": "https://baseproof.vercel.app/icon.png",
-    "splashImageUrl": "https://baseproof.vercel.app/splash.png",
+    "homeUrl": "https://base-proof-frontend.vercel.app",
+    "iconUrl": "https://base-proof-frontend.vercel.app/icon.png",
+    "splashImageUrl": "https://base-proof-frontend.vercel.app/splash.png",
     "splashBackgroundColor": "#2563eb",
     "subtitle": "Certify docs on Base",
     "description": "Prove It. Protect It. Forever. Timestamp and certify any document on the blockchain with immutable proof of existence and ownership. Privacy-first, legally recognized, and affordable.",
     "screenshotUrls": [
-      "https://baseproof.vercel.app/screenshot1.png",
-      "https://baseproof.vercel.app/screenshot2.png",
-      "https://baseproof.vercel.app/screenshot3.png"
+      "https://base-proof-frontend.vercel.app/screenshot1.png",
+      "https://base-proof-frontend.vercel.app/screenshot2.png",
+      "https://base-proof-frontend.vercel.app/screenshot3.png"
     ],
     "primaryCategory": "utility",
     "tags": ["certification", "timestamp", "legal", "documents", "blockchain"],
-    "heroImageUrl": "https://baseproof.vercel.app/hero.png",
+    "heroImageUrl": "https://base-proof-frontend.vercel.app/hero.png",
     "tagline": "Prove It. Protect It. Forever.",
     "ogTitle": "BaseProof - Certify Documents",
     "ogDescription": "Timestamp and certify documents with immutable blockchain proof",
-    "ogImageUrl": "https://baseproof.vercel.app/og-image.png",
+    "ogImageUrl": "https://base-proof-frontend.vercel.app/og-image.png",
     "noindex": false
   }
 }

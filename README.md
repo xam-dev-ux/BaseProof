@@ -337,6 +337,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Made with ❤️ for the Base ecosystem
 
-[Website](https://baseproof.vercel.app) • [GitHub](https://github.com/xam-dev-ux/BaseProof) • [Documentation](docs/)
+[Website](https://base-proof-frontend.vercel.app) • [GitHub](https://github.com/xam-dev-ux/BaseProof) • [Documentation](docs/)
 
 </div>

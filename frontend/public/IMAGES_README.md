@@ -69,7 +69,7 @@ convert -size 750x1334 xc:'#f9fafb' \
 
 ## After Deployment
 
-1. Update `farcaster.json` with your actual domain (currently: baseproof.vercel.app)
+1. Update `farcaster.json` with your actual domain (currently: base-proof-frontend.vercel.app)
 2. Ensure all image URLs are accessible
 3. Share your Mini App URL in Farcaster feed to trigger indexing
 4. Verify manifest at: https://warpcast.com/~/developers/miniapps
