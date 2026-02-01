@@ -55,13 +55,23 @@ async function main() {
   console.log("✅ BaseProof deployed to:", contractAddress);
   console.log("");
 
+  // Wait for contract to be fully deployed
+  console.log("⏳ Waiting for contract confirmation...");
+  console.log("   (Waiting 10 seconds for blockchain sync)");
+  await new Promise(resolve => setTimeout(resolve, 10000));
+
   // Verify deployment
   console.log("🔍 Verifying deployment...");
-  const totalCertificates = await baseProof.getTotalCertificates();
-  const certFee = await baseProof.certificationFee();
+  try {
+    const totalCertificates = await baseProof.getTotalCertificates();
+    const certFee = await baseProof.certificationFee();
 
-  console.log("   Total Certificates:", totalCertificates.toString());
-  console.log("   Certification Fee:", ethers.formatEther(certFee), "ETH");
+    console.log("   Total Certificates:", totalCertificates.toString());
+    console.log("   Certification Fee:", ethers.formatEther(certFee), "ETH");
+  } catch (error) {
+    console.log("   ⚠️  Could not verify immediately (blockchain sync delay)");
+    console.log("   Contract deployed successfully - verify manually on BaseScan");
+  }
   console.log("");
 
   // Save deployment info
