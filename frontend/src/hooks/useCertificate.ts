@@ -1,13 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useContract } from './useContract';
-import { Certificate, VerificationResult, PlatformStats, IssuerStats } from '@/types';
 import { useWallet } from './useWallet';
+import { Certificate, VerificationResult, PlatformStats, IssuerStats } from '@/types';
 import { uploadToIPFS } from '@/utils/ipfs';
 import toast from 'react-hot-toast';
 
 export function useCertificate(certificateId?: bigint) {
   const { contract } = useContract();
-  const { account } = useWallet();
 
   const { data: certificate, isLoading } = useQuery({
     queryKey: ['certificate', certificateId?.toString()],

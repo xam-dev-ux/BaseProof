@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import { useVerifyDocument } from '@/hooks/useCertificate';
 import { computeFileHash, isValidHash } from '@/utils/hash';
-import { formatTimestamp, getRelativeTime, truncateAddress } from '@/utils/format';
+import { formatTimestamp, getRelativeTime } from '@/utils/format';
 import {
   CheckCircleIcon,
   XCircleIcon,

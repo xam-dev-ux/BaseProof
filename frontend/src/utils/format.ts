@@ -16,6 +16,19 @@ export function truncateAddress(address: string, startChars = 6, endChars = 4): 
 }
 
 /**
+ * Truncate hash for display
+ * @param hash Hash to truncate
+ * @param startChars Characters to show at start (default 10)
+ * @param endChars Characters to show at end (default 8)
+ * @returns Truncated hash
+ */
+export function truncateHash(hash: string, startChars = 10, endChars = 8): string {
+  if (!hash) return '';
+  if (hash.length <= startChars + endChars) return hash;
+  return `${hash.slice(0, startChars)}...${hash.slice(-endChars)}`;
+}
+
+/**
  * Format ETH amount
  * @param wei Amount in wei
  * @param decimals Number of decimals to show (default 4)

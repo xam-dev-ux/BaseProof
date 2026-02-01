@@ -4,7 +4,7 @@ import { useCertificate, useTransferCertificate, useRevokeCertificate } from '@/
 import { useContract } from '@/hooks/useContract';
 import { useWallet } from '@/hooks/useWallet';
 import { CategoryLabels, CategoryColors } from '@/types';
-import { formatTimestamp, getRelativeTime, truncateAddress, copyToClipboard, getExplorerTxUrl } from '@/utils/format';
+import { formatTimestamp, getRelativeTime, truncateAddress, copyToClipboard } from '@/utils/format';
 import { generateCertificatePDF, downloadBlob } from '@/utils/pdf';
 import {
   DocumentIcon,

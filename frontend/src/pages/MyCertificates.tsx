@@ -5,7 +5,11 @@ import { CategoryLabels, CategoryColors } from '@/types';
 import { formatTimestamp, truncateHash } from '@/utils/format';
 import { DocumentIcon } from '@heroicons/react/24/outline';
 
-function CertificateCard({ certificateId }: { certificateId: bigint }) {
+interface CertificateCardProps {
+  certificateId: bigint;
+}
+
+function CertificateCard({ certificateId }: CertificateCardProps) {
   const { certificate, isLoading } = useCertificate(certificateId);
 
   if (isLoading || !certificate) {
@@ -69,7 +73,7 @@ function CertificateCard({ certificateId }: { certificateId: bigint }) {
 }
 
 export default function MyCertificates() {
-  const { account, isConnected } = useWallet();
+  const { isConnected } = useWallet();
   const { issuedCertificates, ownedCertificates, isLoading } = useMyCertificates();
 
   if (!isConnected) {
@@ -149,7 +153,7 @@ export default function MyCertificates() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {issuedCertificates.map((certId) => (
+              {issuedCertificates.map((certId: bigint) => (
                 <CertificateCard key={certId.toString()} certificateId={certId} />
               ))}
             </div>
@@ -177,8 +181,8 @@ export default function MyCertificates() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {ownedCertificates
-                .filter((certId) => !issuedCertificates.includes(certId))
-                .map((certId) => (
+                .filter((certId: bigint) => !issuedCertificates.includes(certId))
+                .map((certId: bigint) => (
                   <CertificateCard key={certId.toString()} certificateId={certId} />
                 ))}
             </div>
