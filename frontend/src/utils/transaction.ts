@@ -1,81 +1,37 @@
 import { Attribution } from "ox/erc8021";
-import { Contract, JsonRpcProvider, Signer } from "ethers";
+import { ethers } from "ethers";
 
 // Builder Code from base.dev
 const DATA_SUFFIX = Attribution.toDataSuffix({
   codes: ["bc_t0jum0me"],
 });
 
-const BASE_RPC_URL = import.meta.env.VITE_BASE_RPC_URL || 'https://mainnet.base.org';
-
-// Always-available read provider pointing to Base mainnet
-const readProvider = new JsonRpcProvider(BASE_RPC_URL);
-
 /**
- * Adds the builder code data suffix to transaction data
+ * Appends the builder code suffix to existing transaction data
  */
 export function addBuilderCode(data: string): string {
-  if (!data || data === '0x') {
-    return DATA_SUFFIX;
-  }
+  if (!data || data === '0x') return DATA_SUFFIX;
   const cleanData = data.startsWith('0x') ? data.slice(2) : data;
   const cleanSuffix = DATA_SUFFIX.startsWith('0x') ? DATA_SUFFIX.slice(2) : DATA_SUFFIX;
   return `0x${cleanData}${cleanSuffix}`;
 }
 
 /**
- * Wraps a contract so that:
- * - view/pure calls always use Base mainnet readProvider (avoids wrong-network 0x errors)
- * - write calls append the builder code and use the original signer
+ * Patches a signer so that every sendTransaction call automatically
+ * appends the builder code to the transaction data.
+ * This approach works reliably with ethers v6 regardless of how
+ * the transaction is initiated (direct or via Contract).
  */
-export function wrapContractWithBuilderCode(contract: Contract): Contract {
-  return new Proxy(contract, {
-    get(target, prop) {
-      const original = target[prop as keyof Contract];
+export function patchSignerWithBuilderCode(signer: ethers.Signer): ethers.Signer {
+  const original = signer.sendTransaction.bind(signer);
 
-      if (typeof original === 'function' && target.interface.hasFunction(prop as string)) {
-        return async (...args: any[]) => {
-          const fragment = target.interface.getFunction(prop as string);
+  // Monkey-patch sendTransaction on the signer instance
+  (signer as any).sendTransaction = async (tx: ethers.TransactionRequest) => {
+    if (tx.data && tx.data !== '0x' && typeof tx.data === 'string') {
+      tx = { ...tx, data: addBuilderCode(tx.data) };
+    }
+    return original(tx);
+  };
 
-          if (!fragment) {
-            return original.apply(target, args);
-          }
-
-          // Read-only: always call via Base mainnet provider to avoid wrong-network errors
-          if (fragment.stateMutability === 'view' || fragment.stateMutability === 'pure') {
-            const address = await target.getAddress();
-            const readContract = new Contract(address, target.interface, readProvider);
-            return (readContract as any)[prop as string](...args);
-          }
-
-          // Write: append builder code and send via signer
-          const lastArg = args[args.length - 1];
-          const hasOverrides = lastArg && typeof lastArg === 'object' && !Array.isArray(lastArg);
-          const funcArgs = hasOverrides ? args.slice(0, -1) : args;
-          const overrides = hasOverrides ? { ...lastArg } : {};
-
-          const data = target.interface.encodeFunctionData(prop as string, funcArgs);
-          overrides.data = addBuilderCode(data);
-
-          const signer = target.runner as Signer;
-          if (!signer || typeof signer.sendTransaction !== 'function') {
-            throw new Error('Contract runner must be a Signer to send transactions');
-          }
-
-          return signer.sendTransaction({
-            to: await target.getAddress(),
-            data: overrides.data,
-            value: overrides.value,
-            gasLimit: overrides.gasLimit,
-            gasPrice: overrides.gasPrice,
-            maxFeePerGas: overrides.maxFeePerGas,
-            maxPriorityFeePerGas: overrides.maxPriorityFeePerGas,
-            nonce: overrides.nonce,
-          });
-        };
-      }
-
-      return original;
-    },
-  });
+  return signer;
 }

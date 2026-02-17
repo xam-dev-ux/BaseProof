@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ethers, BrowserProvider } from 'ethers';
+import { patchSignerWithBuilderCode } from '@/utils/transaction';
 
 const BASE_CHAIN_ID = import.meta.env.VITE_BASE_CHAIN_ID || '8453';
 
@@ -35,7 +36,7 @@ export function useWallet() {
       const p = new BrowserProvider(window.ethereum);
       const accounts = await p.listAccounts();
       if (accounts.length > 0) {
-        const s = await p.getSigner();
+        const s = patchSignerWithBuilderCode(await p.getSigner());
         const network = await p.getNetwork();
         setProvider(p);
         setSigner(s);
@@ -57,7 +58,7 @@ export function useWallet() {
     try {
       const p = new BrowserProvider(window.ethereum);
       await p.send('eth_requestAccounts', []);
-      const s = await p.getSigner();
+      const s = patchSignerWithBuilderCode(await p.getSigner());
       const address = await s.getAddress();
       const network = await p.getNetwork();
       setProvider(p);
