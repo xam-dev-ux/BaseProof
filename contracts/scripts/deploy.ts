@@ -14,7 +14,7 @@ async function main() {
   console.log("💰 Account balance:", ethers.formatEther(balance), "ETH\n");
 
   // Configuration
-  const certificationFee = ethers.parseEther("0.001"); // 0.001 ETH
+  const certificationFee = ethers.parseEther("0.000001"); // 0.000001 ETH
   const transferFee = ethers.parseEther("0.0005"); // 0.0005 ETH
   const revocationCooldown = 30 * 24 * 60 * 60; // 30 days in seconds
   const disputePeriod = 90 * 24 * 60 * 60; // 90 days in seconds

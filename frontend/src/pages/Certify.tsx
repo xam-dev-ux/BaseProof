@@ -519,7 +519,7 @@ export default function Certify() {
               <div className="text-sm text-blue-800 space-y-1">
                 <div className="flex justify-between">
                   <span>Certification Fee:</span>
-                  <span>0.001 ETH (~$2.50)</span>
+                  <span>0.000001 ETH (~$0.003)</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Estimated Gas:</span>
@@ -527,7 +527,7 @@ export default function Certify() {
                 </div>
                 <div className="flex justify-between font-semibold border-t border-blue-300 pt-1 mt-1">
                   <span>Total:</span>
-                  <span>~0.00106 ETH (~$2.65)</span>
+                  <span>~0.000061 ETH (~$0.15)</span>
                 </div>
               </div>
             </div>
